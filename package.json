@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "build/server.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "build-ts": "tsc",
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
