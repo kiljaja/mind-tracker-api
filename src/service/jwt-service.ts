@@ -5,8 +5,8 @@ const SIGN_OPTIONS: jwt.SignOptions = {
   expiresIn: process.env.JWT_EXPIRES_IN || '1d',
 };
 
-export const generateToken = async (username: string) => {
-  const payload: {} = { username };
+export const generateToken = async (user: {}) => {
+  const payload: {} = { user };
   const token: string = jwt.sign(payload, JWT_KEY, SIGN_OPTIONS);
   return token;
 };

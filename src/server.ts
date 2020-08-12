@@ -21,6 +21,7 @@ app.get('/', (req: Request, res: Response) => res.send(`I'm a working server`));
 
 app.use('/user', userController);
 
+
 // Handler errors
 app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
