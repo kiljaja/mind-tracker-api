@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 dotenv.config();
@@ -7,7 +7,7 @@ dotenv.config();
 
 import { pool } from './db/db';
 import './auth/auth';
-import { userController } from "./controller/user-controller";
+import { userController } from './controller/user-controller';
 import { userRepository } from './repository/user-repository';
 
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
@@ -19,19 +19,12 @@ app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => res.send(`I'm a working server`));
 
-
 app.use('/user', userController);
 
-//test database
-app.get('/db', async (req: Request, res: Response) => {
-  try {
-    const result = await pool.query('SELECT * FROM test_table');
-    const results = { results: result ? result.rows : null };
-    res.status(201).json(results);
-  } catch (err) {
-    console.error(err);
-    res.send('Error ' + err);
-  }
+// Handler errors
+app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
+  res.status(err.status || 500);
+  res.json({ message: err.message });
 });
 
 app.listen(PORT, () => {
