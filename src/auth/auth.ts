@@ -8,7 +8,7 @@ const hashRounds = parseInt(process.env.HASH_ROUNDS as string, 10) || 10;
 
 interface CustomUser {
   id?: number;
-  username?: string;
+  username: string;
   password?: string;
   token?: string;
 }
