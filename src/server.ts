@@ -3,7 +3,10 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 dotenv.config();
+// ----------------------------------------------------------------------- //
+
 import { pool } from './db/db';
+import { userRepository } from './repository/user-repository';
 
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
 
@@ -13,6 +16,18 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => res.send(`I'm a working server`));
+
+
+//Test user Repo
+app.post('/register', async (req: Request, res: Response) => {
+  try {
+    const { username, password } = req.body;
+    const newUser = await userRepository.add(username, password);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(401).json(error);
+  }
+});
 
 //test database
 app.get('/db', async (req: Request, res: Response) => {
