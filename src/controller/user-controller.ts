@@ -17,7 +17,7 @@ userController.post(
     try {
       const { username } = req.user as CustomUser;
       const token = await generateToken(username);
-      res.status(200).json({
+      res.status(201).json({
         message: 'User login successful',
         token: token,
         user: req.user,
