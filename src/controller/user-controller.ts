@@ -3,9 +3,10 @@ import passport from 'passport';
 
 import { generateToken } from '../service/jwt-service';
 
-import { userRepository } from '../repository/user-repository';
 import moment from 'moment';
 import { meditationRepository } from '../repository/meditation-repository';
+import { meditationService } from '../service/meditation-service';
+
 export const userController: Router = express.Router();
 
 //TODO: move interface to common module
@@ -55,6 +56,7 @@ userController.use(
     try {
       const user = req.user as CustomUser;
       const { id, awarenessPoints, postingDate  } = req.body;
+      const b = await meditationService.add(user.username, postingDate);
       const defaultDate = moment();
       const d5 = moment(postingDate);
       const d1 = moment().subtract(1, 'days');
@@ -67,7 +69,7 @@ userController.use(
       await meditationRepository.add(user.username, d3);
       await meditationRepository.add(user.username, d4);
 
-      const allMeditations = await meditationRepository.getByUsername(
+      const allMeditations = await meditationService.getAllMeditations(
         user.username
       );
 
