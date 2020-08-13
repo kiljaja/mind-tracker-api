@@ -4,7 +4,7 @@ import passport from 'passport';
 import { generateToken } from '../service/jwt-service';
 
 import { userRepository } from '../repository/user-repository';
-import moment from "moment";
+import moment from 'moment';
 import { meditationRepository } from '../repository/meditation-repository';
 export const userController: Router = express.Router();
 
@@ -54,12 +54,32 @@ userController.use(
   async (req: Request, res: Response) => {
     try {
       const user = req.user as CustomUser;
+      const { id, awarenessPoints, postingDate  } = req.body;
       const defaultDate = moment();
-      const result = await meditationRepository.getByUsername(user.username);
+      const d5 = moment(postingDate);
+      const d1 = moment().subtract(1, 'days');
+      const d2 = moment().subtract(2, 'days');
+      const d3 = moment().subtract(3, 'days');
+      const d4 = moment().startOf("isoWeek");
+      await meditationRepository.add(user.username, defaultDate);
+      await meditationRepository.add(user.username, d1);
+      await meditationRepository.add(user.username, d2);
+      await meditationRepository.add(user.username, d3);
+      await meditationRepository.add(user.username, d4);
+
+      const allMeditations = await meditationRepository.getByUsername(
+        user.username
+      );
+
+      const update = await meditationRepository.updateById(id, d5, awarenessPoints)
+
+      const result = await meditationRepository.deleteById(id);
       res.status(200).json({
         message: 'Meditation added',
+        update,
         user,
-        result
+        result,
+        allMeditations,
       });
     } catch (error) {
       res.status(400).json({ message: error.message });
