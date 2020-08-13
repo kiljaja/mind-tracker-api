@@ -55,7 +55,7 @@ userController.use(
     try {
       const user = req.user as CustomUser;
       const defaultDate = moment();
-      const result = await meditationRepository.add(user.username, defaultDate);
+      const result = await meditationRepository.getByUsername(user.username);
       res.status(200).json({
         message: 'Meditation added',
         user,
