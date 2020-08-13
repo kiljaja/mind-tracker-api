@@ -10,7 +10,7 @@ export const add = async (username: string, postingDate: string = '') => {
 
 export const getAllMeditations = async (username: string = '') => {
   if (username === '') throw new Error(`Error: no user provided`);
-  return await meditationRepository.getByUsername(username);
+  return (await meditationRepository.getByUsername(username)) || [];
 };
 
 export const deleteById = async (id: number) => {
@@ -21,7 +21,7 @@ export const deleteById = async (id: number) => {
 export const updateById = async (
   id: number,
   postingDate: string = '',
-  awarenessPoints: number
+  awarenessPoints: number = 0
 ) => {
   if (id <= 0) throw new Error(`Error: ID:${id} is not a valid number`);
   if (awarenessPoints <= 0)

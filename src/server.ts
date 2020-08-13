@@ -8,7 +8,7 @@ dotenv.config();
 import { pool } from './db/db';
 import './auth/auth';
 import { userController } from './controller/user-controller';
-import { userRepository } from './repository/user-repository';
+import { meditationController } from './controller/meditation-controller';
 
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
 
@@ -20,7 +20,7 @@ app.use(express.json());
 app.get('/', (req: Request, res: Response) => res.send(`I'm a working server`));
 
 app.use('/user', userController);
-
+app.use('/meditation', meditationController);
 
 // Handler errors
 app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
