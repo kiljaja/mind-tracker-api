@@ -3,6 +3,13 @@ const TABLE = 'meditation';
 const AS_CAMEL_CASE = `id, posting_date AS "postingDate", username, awareness_points AS "awarenessPoints"`;
 const DEFAULT_LIMIT = 100;
 
+interface Meditation {
+  id : string;
+  postingDate: string;
+  username: string;
+  awarenessPoints: number
+}
+
 export const add = async (username: string, postingDate: moment.Moment) => {
   const SQL: string = `
     INSERT INTO ${TABLE} as m (posting_date, username)
@@ -14,7 +21,7 @@ export const add = async (username: string, postingDate: moment.Moment) => {
   `;
 
   const PARAMS: [moment.Moment, string] = [postingDate, username];
-  return (await pool.query(SQL, PARAMS)).rows[0];
+  return (await pool.query(SQL, PARAMS)).rows[0] as Meditation;
 };
 
 export const getByUsername = async (username: string) => {
@@ -26,7 +33,7 @@ export const getByUsername = async (username: string) => {
   `;
 
   const PARAMS: [string] = [username];
-  return (await pool.query(SQL, PARAMS)).rows;
+  return (await pool.query(SQL, PARAMS)).rows as Meditation[];
 };
 
 export const deleteById = async (id: number) => {
@@ -37,7 +44,7 @@ export const deleteById = async (id: number) => {
   `;
 
   const PARAMS: [number] = [id];
-  return (await pool.query(SQL, PARAMS)).rows[0];
+  return (await pool.query(SQL, PARAMS)).rows[0] as Meditation;
 };
 
 export const updateById = async (id: number, postingDate: moment.Moment, awarenessPoints: number ) => {
@@ -48,7 +55,7 @@ export const updateById = async (id: number, postingDate: moment.Moment, awarene
     RETURNING ${AS_CAMEL_CASE};
   `;
   const PARAMS: [number, moment.Moment, number ] = [id, postingDate, awarenessPoints];
-  return (await pool.query(SQL, PARAMS)).rows[0];
+  return (await pool.query(SQL, PARAMS)).rows[0] as Meditation;
 };
 
 
