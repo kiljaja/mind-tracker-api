@@ -47,7 +47,7 @@ meditationController.put('/', async (req: Request, res: Response) => {
       postingDate,
       awarenessPoints
     );
-    res.status(201).json({
+    res.status(200).json({
       message: 'Successful updating a meditation',
       data: updatedMeditation,
     });
@@ -60,7 +60,7 @@ meditationController.delete('/', async (req: Request, res: Response) => {
   try {
     const { id } = req.body;
     const updatedMeditation = await meditationService.deleteById(id);
-    res.status(201).json({
+    res.status(200).json({
       message: 'Successful at deleting a meditation',
       data: updatedMeditation,
     });
